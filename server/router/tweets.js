@@ -83,7 +83,7 @@ router.put('/:id', (req, res, next) => {
 // DELETE /tweets/:id
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id;
-  tweets = tweets.filter((t) => t.id !== id);
+  tweets = tweets.filter((t) => t.id != id);
   res.sendStatus(204);
 });
 
