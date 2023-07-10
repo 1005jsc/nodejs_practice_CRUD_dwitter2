@@ -1,24 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 
-let tweets = [
-  {
-    id: '1',
-    text: '드림코더분들 화이팅',
-    createdAt: Date.now().toString(),
-    name: 'Bob',
-    username: 'bob',
-    url: 'https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-1.png',
-  },
-  {
-    id: '2',
-    text: '안뇽',
-    createdAt: Date.now().toString(),
-    name: 'Bob',
-    username: 'ellie',
-    url: 'https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-1.png',
-  },
-];
+import * as TweetRepository from '../data/tweet.js';
 
 const router = express.Router();
 
@@ -26,7 +9,7 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
   const username = req.query.username;
-  const data = username ? tweets.filter((v) => v.username === username) : tweets;
+  const data = username ? TweetRepository.getAllByUsername(username) : TweetRepository.getAll();
   res.status(200).json(data);
 });
 
@@ -35,7 +18,7 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   const id = req.params.id;
 
-  const tweet = tweets.find((t) => t.id == id);
+  const tweet = TweetRepository.getById(id);
 
   if (tweet) {
     res.status(200).json(tweet);
@@ -50,15 +33,9 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   // 1. 상단에는 필요한 변수들을 정의해줌
   const { text, name, username } = req.body;
-  const tweet = {
-    id: Date.now().toString(),
-    text,
-    createdAt: new Date(),
-    name,
-    username,
-  };
 
-  tweets = [tweet, ...tweets];
+  const tweet = TweetRepository.create(text, name, username);
+
   // 200 : 성공이다, 201 : '성공적으로 만들어졌다'
   res.status(201).json(tweet);
 });
@@ -70,10 +47,9 @@ router.put('/:id', (req, res, next) => {
 
   const text = req.body.text;
 
-  const tweet = tweets.find((t) => t.id === id);
+  const tweet = TweetRepository.update(id, text);
 
   if (tweet) {
-    tweet.text = text;
     res.status(200).json(tweet);
   } else {
     res.status(404).json({ message: `Tweet id(${id}) not found` });
@@ -83,7 +59,7 @@ router.put('/:id', (req, res, next) => {
 // DELETE /tweets/:id
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id;
-  tweets = tweets.filter((t) => t.id != id);
+  TweetRepository.remove(id);
   res.sendStatus(204);
 });
 
