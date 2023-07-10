@@ -1,15 +1,17 @@
 import * as TweetRepository from '../data/tweet.js';
 
-export const getTweets = (req, res, next) => {
+export const getTweets = async (req, res, next) => {
   const username = req.query.username;
-  const data = username ? TweetRepository.getAllByUsername(username) : TweetRepository.getAll();
+  const data = await (username
+    ? TweetRepository.getAllByUsername(username)
+    : TweetRepository.getAll());
   res.status(200).json(data);
 };
 
-export const getTweet = (req, res, next) => {
+export const getTweet = async (req, res, next) => {
   const id = req.params.id;
 
-  const tweet = TweetRepository.getById(id);
+  const tweet = await TweetRepository.getById(id);
 
   if (tweet) {
     res.status(200).json(tweet);
@@ -19,22 +21,22 @@ export const getTweet = (req, res, next) => {
   }
 };
 
-export const createTweet = (req, res, next) => {
+export const createTweet = async (req, res, next) => {
   // 1. 상단에는 필요한 변수들을 정의해줌
   const { text, name, username } = req.body;
 
-  const tweet = TweetRepository.create(text, name, username);
+  const tweet = await TweetRepository.create(text, name, username);
 
   // 200 : 성공이다, 201 : '성공적으로 만들어졌다'
   res.status(201).json(tweet);
 };
 
-export const updateTweet = (req, res, next) => {
+export const updateTweet = async (req, res, next) => {
   const id = req.params.id;
 
   const text = req.body.text;
 
-  const tweet = TweetRepository.update(id, text);
+  const tweet = await TweetRepository.update(id, text);
 
   if (tweet) {
     res.status(200).json(tweet);
@@ -43,8 +45,8 @@ export const updateTweet = (req, res, next) => {
   }
 };
 
-export const removeTweet = (req, res, next) => {
+export const removeTweet = async (req, res, next) => {
   const id = req.params.id;
-  TweetRepository.remove(id);
+  await TweetRepository.remove(id);
   res.sendStatus(204);
 };
