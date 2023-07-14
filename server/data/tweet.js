@@ -5,7 +5,7 @@ let tweets = [
     createdAt: Date.now().toString(),
     name: 'Bob',
     username: 'bob',
-    url: 'https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-1.png',
+    // url: 'https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-1.png',
   },
   {
     id: '2',
@@ -13,7 +13,7 @@ let tweets = [
     createdAt: Date.now().toString(),
     name: 'Bob',
     username: 'ellie',
-    url: 'https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-1.png',
+    // url: 'https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-1.png',
   },
 ];
 

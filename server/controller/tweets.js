@@ -48,5 +48,6 @@ export const updateTweet = async (req, res, next) => {
 export const removeTweet = async (req, res, next) => {
   const id = req.params.id;
   await TweetRepository.remove(id);
-  res.sendStatus(204);
+
+  res.status(200).json({ message: '지웠으니 안심하라구~' });
 };
