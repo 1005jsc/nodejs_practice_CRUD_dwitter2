@@ -25,12 +25,7 @@ router.get('/:id', TweetController.getTweet);
 
 // POST /tweets
 
-router.post(
-  '/',
-  validateTweet,
-
-  TweetController.createTweet
-);
+router.post('/', validateTweet, TweetController.createTweet);
 
 // PUT /tweets/:id
 
