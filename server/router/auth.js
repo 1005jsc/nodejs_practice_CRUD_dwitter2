@@ -12,12 +12,5 @@ router.post('/signup', validateSignup, authController.signup);
 router.post('/login', validateCredential, authController.login);
 
 router.get('/me', isAuth, authController.me);
-// router.get(
-//   '/me',
-//   (req, res, next) => {
-//     const yes = req;
-//   },
-//   authController.me
-// );
 
 export default router;

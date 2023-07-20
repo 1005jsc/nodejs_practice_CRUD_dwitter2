@@ -4,7 +4,8 @@ import 'express-async-errors';
 import * as TweetController from '../controller/tweets.js';
 import { body, validationResult, check } from 'express-validator';
 import { validate } from '../middleware/validator.js';
-
+import { isAuth } from '../middleware/auth.js';
+// import { isAuth } from '../middleware/auth.js'
 const router = express.Router();
 
 // express-validator 로 규칙도 정해보자
@@ -17,21 +18,21 @@ const validateTweet = [
 
 // GET /tweets , /tweets?username=:username
 
-router.get('/', TweetController.getTweets);
+router.get('/', isAuth, TweetController.getTweets);
 
 // GET /tweets/:id
 
-router.get('/:id', TweetController.getTweet);
+router.get('/:id', isAuth, TweetController.getTweet);
 
 // POST /tweets
 
-router.post('/', validateTweet, TweetController.createTweet);
+router.post('/', validateTweet, isAuth, TweetController.createTweet);
 
 // PUT /tweets/:id
 
-router.put('/:id', validateTweet, TweetController.updateTweet);
+router.put('/:id', validateTweet, isAuth, TweetController.updateTweet);
 
 // DELETE /tweets/:id
-router.delete('/:id', TweetController.removeTweet);
+router.delete('/:id', isAuth, TweetController.removeTweet);
 
 export default router;
