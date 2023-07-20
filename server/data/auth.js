@@ -18,3 +18,7 @@ export const createUser = async (user) => {
   users.push(created);
   return created.id;
 };
+
+export const findById = async (id) => {
+  return users.find((v) => v.id === id);
+};

@@ -11,7 +11,6 @@ export const validate = (req, res, next) => {
 
 export const validateCredential = [
   body('username').trim().notEmpty().withMessage('username should be at least 5 characters'),
-
   body('password').trim().notEmpty().withMessage('password should be at least 5 characters'),
   validate,
 ];
