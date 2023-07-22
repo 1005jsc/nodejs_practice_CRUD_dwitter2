@@ -73,7 +73,11 @@ export const getById = async (id) => {
 };
 
 export const create = async (text, name, username) => {
+  console.log(username);
+
   const user = await userRepository.findByUsername(username);
+
+  console.log(user);
 
   const tweet = {
     id: Date.now().toString(),

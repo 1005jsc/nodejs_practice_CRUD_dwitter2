@@ -14,6 +14,8 @@ export const signup = async (req, res) => {
   const { username, password, name, email, url } = req.body;
   const found = await userRepository.findByUsername(username);
 
+  // console.log(req.body);
+
   if (found) {
     return res.status(409).json({ message: `${username} already exists` });
   }
@@ -31,6 +33,10 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
+
+  console.log(username);
+  console.log(password);
+
   const user = await userRepository.findByUsername(username);
   if (!user) {
     return res.status(401).json({ message: 'Invalid user or password' });

@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const NewTweetForm = ({ tweetService, onError, onCreated }) => {
   const [tweet, setTweet] = useState('');
+
+  const { user } = useAuth();
+
+  // console.log('user');
+  // console.log(user);
 
   const onSubmit = async (event) => {
     event.preventDefault();
