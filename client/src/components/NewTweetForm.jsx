@@ -12,7 +12,7 @@ const NewTweetForm = ({ tweetService, onError, onCreated }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
     tweetService
-      .postTweet(tweet)
+      .postTweet(tweet, user.username)
       .then((created) => {
         setTweet('');
         onCreated(created);
