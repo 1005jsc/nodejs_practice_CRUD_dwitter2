@@ -15,7 +15,6 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 app.use('/tweets', tweetsRouter);
-
 app.use('/auth', authRouter);
 
 app.use((req, res, next) => {

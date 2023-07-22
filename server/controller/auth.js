@@ -51,6 +51,7 @@ export const me = async (req, res, next) => {
   }
   res.status(200).json({ token: req.token, username: user.username });
 };
+
 function createJwtToken(id) {
   return jwt.sign({ id }, jwtSecretKey, { expiresIn: jwtExpiresInDays });
 }

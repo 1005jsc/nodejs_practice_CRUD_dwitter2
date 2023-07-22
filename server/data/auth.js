@@ -9,6 +9,10 @@ let users = [
   },
 ];
 
+export const getAllUsers = async () => {
+  return users;
+};
+
 export const findByUsername = async (username) => {
   return users.find((v) => v.username === username);
 };
