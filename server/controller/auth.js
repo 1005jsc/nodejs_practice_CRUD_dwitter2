@@ -2,24 +2,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {} from 'express-async-errors';
 import * as userRepository from '../data/auth.js';
-
-// https://www.lastpass.com/features/password-generator
-
-const jwtSecretKey = 'tdhPQ7S*MIyaFD6oPl19';
-
-const jwtExpiresInDays = '2d';
-const bcryptSaltRounds = 12;
+import { config } from '../config.js';
 
 export const signup = async (req, res) => {
   const { username, password, name, email, url } = req.body;
   const found = await userRepository.findByUsername(username);
 
-  // console.log(req.body);
-
   if (found) {
     return res.status(409).json({ message: `${username} already exists` });
   }
-  const hashed = await bcrypt.hash(password, bcryptSaltRounds);
+
+  const hashed = await bcrypt.hash(password, parseInt(config.bcrypt.saltRounds));
+
   const userId = await userRepository.createUser({
     username,
     password: hashed,
@@ -59,5 +53,5 @@ export const me = async (req, res, next) => {
 };
 
 function createJwtToken(id) {
-  return jwt.sign({ id }, jwtSecretKey, { expiresIn: jwtExpiresInDays });
+  return jwt.sign({ id }, config.jwt.secretKey, { expiresIn: config.jwt.expiresInSec });
 }
