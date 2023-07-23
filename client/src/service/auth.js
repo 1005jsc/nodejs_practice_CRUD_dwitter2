@@ -5,9 +5,6 @@ export default class AuthService {
   }
 
   async signup(username, password, name, email, url) {
-    console.log(username);
-    console.log(password);
-
     const data = await this.http.fetch('/auth/signup', {
       method: 'POST',
       body: JSON.stringify({

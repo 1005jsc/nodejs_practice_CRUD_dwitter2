@@ -27,9 +27,9 @@ function App({ tweetService }) {
     <div className='app'>
       <Header
         username={user.username}
-        onLogout={onLogout}
         onAllTweets={onAllTweets}
         onMyTweets={onMyTweets}
+        onLogout={onLogout}
       />
       <Switch>
         (

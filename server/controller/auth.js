@@ -34,8 +34,8 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   const { username, password } = req.body;
 
-  console.log(username);
-  console.log(password);
+  // console.log(username);
+  // console.log(password);
 
   const user = await userRepository.findByUsername(username);
   if (!user) {

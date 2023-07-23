@@ -6,6 +6,7 @@ import helmet from 'helmet';
 
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
+import devRouter from './router/dev.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(morgan('tiny'));
 
 app.use('/tweets', tweetsRouter);
 app.use('/auth', authRouter);
+app.use('/dev', devRouter);
 
 app.use((req, res, next) => {
   res.sendStatus(404);
