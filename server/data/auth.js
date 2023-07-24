@@ -2,9 +2,17 @@ let users = [
   {
     id: '1',
     username: 'bob',
-    password: '1234',
+    password: '$2b$12$MadBe2UG0ZQPSkPowHPEAumLt/o8OpLZ4qBnWtZfpWD1Ih4xscpJi',
     name: 'Bob',
     email: 'bob@gmail.com',
+    url: '',
+  },
+  {
+    id: '2',
+    username: 'ellie',
+    password: '$2b$12$MadBe2UG0ZQPSkPowHPEAumLt/o8OpLZ4qBnWtZfpWD1Ih4xscpJi',
+    name: 'Ellie',
+    email: 'ellie@gmail.com',
     url: '',
   },
 ];
