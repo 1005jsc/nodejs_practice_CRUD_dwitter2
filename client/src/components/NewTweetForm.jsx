@@ -15,7 +15,7 @@ const NewTweetForm = ({ tweetService, onError, onCreated }) => {
       .postTweet(tweet, user.username)
       .then((created) => {
         setTweet('');
-        onCreated(created);
+        // onCreated(created); created의 생성은 이제 소켓에서 하고있음
       })
       .catch(onError);
   };
