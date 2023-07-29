@@ -1,4 +1,4 @@
-import { db, sequelize } from '../db/database.js';
+import { sequelize } from '../db/database.js';
 import * as userRepository from './auth.js';
 
 import SQ from 'sequelize';
@@ -50,6 +50,15 @@ export const getAll = async () => {
 };
 
 export const getAllByUsername = async (username) => {
+  return Tweet.findAll({
+    ...INCLUDE_USER,
+    ...ORDER_DESC,
+    include: {
+      ...INCLUDE_USER.include,
+      where: { username },
+    },
+  });
+
   // return db
   //   .execute(`${SELECT_JOIN} WHERE username=? ${ORDER_DESC}`, [username])
   //   .then((result) => result[0]);
@@ -57,6 +66,8 @@ export const getAllByUsername = async (username) => {
 };
 
 export const getById = async (id) => {
+  return Tweet.findOne({ where: { id }, ...INCLUDE_USER });
+
   // return db.execute(`${SELECT_JOIN} WHERE tw.id=? `, [id]).then((result) => result[0][0]);
   // const found = tweets.find((tweet) => tweet.id === id);
   // const yo = await userRepository.getAllUsers();
@@ -69,10 +80,7 @@ export const getById = async (id) => {
 };
 
 export const create = async (text, userId) => {
-  return Tweet.create({ text, userId }).then((data) => {
-    console.log(data);
-    return data;
-  });
+  return Tweet.create({ text, userId }).then((data) => getById(data.dataValues.id));
 
   // return db
   //   .execute(`INSERT INTO tweets (text, createdAt, userId) VALUES(?,?,?)`, [
@@ -96,6 +104,11 @@ export const create = async (text, userId) => {
 };
 
 export const update = async (id, text) => {
+  return Tweet.findByPk(id, INCLUDE_USER) //
+    .then((tweet) => {
+      tweet.text = text;
+      return tweet.save();
+    });
   // return db
   //   .execute('UPDATE tweets SET text=? WHERE id=?', [text, id]) //
   //   .then(() => getById(id));
@@ -114,6 +127,11 @@ export const update = async (id, text) => {
 };
 
 export const remove = async (id) => {
+  return Tweet.findByPk(id) //
+    .then((tweet) => {
+      tweet.destroy();
+    });
+
   // return db.execute('DELETE FROM tweets WHERE id=?', [id]);
   // tweets = tweets.filter((t) => t.id != id);
 };
