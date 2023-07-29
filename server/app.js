@@ -10,6 +10,7 @@ import devRouter from './router/dev.js';
 import { config } from './config.js';
 import { Server } from 'socket.io';
 import { initSocket } from './connection/socket.js';
+import { connectDB } from './database/database.js';
 
 const app = express();
 
@@ -31,9 +32,15 @@ app.use((error, req, res, next) => {
   res.sendStatus(500);
 });
 
-const server = app.listen(config.host.port);
+connectDB()
+  .then((db) => {
+    console.log('init');
 
-initSocket(server);
+    const server = app.listen(config.host.port);
+
+    initSocket(server);
+  })
+  .catch(console.error);
 
 // const socketIO = new Server(server, {
 //   cors: { origin: '*' },
