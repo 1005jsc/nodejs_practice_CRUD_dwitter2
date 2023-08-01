@@ -6,11 +6,11 @@ export const connectDB = async () => {
 };
 
 // TODO(재신) : Delete below
-let db;
+// let db;
 
-export const getTweets = () => {
-  return db.collection('tweets');
-};
+// export const getTweets = () => {
+//   return db.collection('tweets');
+// };
 
 export function useVirtualId(schema) {
   //_id -> id 같은 가상의 아이디 추가해주기

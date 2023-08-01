@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
-import { getUsers, useVirtualId } from '../database/database.js';
+// import { getUsers, useVirtualId } from '../database/database.js';
 import mongoose from 'mongoose';
+import { useVirtualId } from '../database/database.js';
 
 // mongoDB는 nosql이라 schema개념이 없는데
 // mongoose에는 schema 개념이 있다
@@ -49,6 +49,6 @@ export const findById = async (id) => {
   //   .then(mapOptionalUser);
 };
 
-function mapOptionalUser(user) {
-  return user ? { ...user, id: user._id.toString() } : user;
-}
+// function mapOptionalUser(user) {
+//   return user ? { ...user, id: user._id.toString() } : user;
+// }
