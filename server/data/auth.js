@@ -1,5 +1,21 @@
 import { ObjectId } from 'mongodb';
-import { getUsers } from '../database/database.js';
+import { getUsers, useVirtualId } from '../database/database.js';
+import mongoose from 'mongoose';
+
+// mongoDB는 nosql이라 schema개념이 없는데
+// mongoose에는 schema 개념이 있다
+
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  url: String,
+});
+
+useVirtualId(userSchema);
+
+const User = mongoose.model('User', userSchema);
 
 export const getAllUsers = async () => {
   return getUsers()
@@ -11,21 +27,26 @@ export const getAllUsers = async () => {
 };
 
 export const findByUsername = async (username) => {
-  return getUsers() //
-    .findOne({ username }) //
-    .then(mapOptionalUser);
+  return User.findOne({ username });
+
+  // return getUsers() //
+  //   .findOne({ username }) //
+  //   .then(mapOptionalUser);
 };
 
 export const createUser = async (user) => {
-  return getUsers()
-    .insertOne(user)
-    .then((data) => data.insertedId.toString());
+  return new User(user).save().then((data) => data.id);
+
+  // return getUsers()
+  //   .insertOne(user)
+  //   .then((data) => data.insertedId.toString());
 };
 
 export const findById = async (id) => {
-  return getUsers()
-    .findOne({ _id: new ObjectId(id) }) //
-    .then(mapOptionalUser);
+  return User.findById(id);
+  // return getUsers()
+  //   .findOne({ _id: new ObjectId(id) }) //
+  //   .then(mapOptionalUser);
 };
 
 function mapOptionalUser(user) {
