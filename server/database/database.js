@@ -1,14 +1,13 @@
 import MongoDb from 'mongodb';
 import { config } from '../config.js';
-
-let db;
+import mongoose from 'mongoose';
 
 export const connectDB = async () => {
-  return MongoDb.MongoClient.connect(config.db.host) //
-    .then((client) => {
-      db = client.db();
-    });
+  return mongoose.connect(config.db.host);
 };
+
+// TODO(재신) : Delete below
+let db;
 
 export const getUsers = () => {
   return db.collection('users');
