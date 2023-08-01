@@ -2,7 +2,12 @@ import { ObjectId } from 'mongodb';
 import { getUsers } from '../database/database.js';
 
 export const getAllUsers = async () => {
-  return getUsers();
+  return getUsers()
+    .find()
+    .then((data) => {
+      console.log(data);
+      return data;
+    });
 
   // return users;
 };
@@ -10,7 +15,11 @@ export const getAllUsers = async () => {
 export const findByUsername = async (username) => {
   return getUsers() //
     .findOne({ username }) //
-    .then(mapOptionalUser);
+    .then(
+      mapOptionalUser
+
+      // mapOptionalUser
+    );
   // return users.find((v) => v.username === username);
 };
 
@@ -33,5 +42,7 @@ export const findById = async (id) => {
 };
 
 function mapOptionalUser(user) {
-  return user ? { ...user, id: user._id } : user;
+  // console.log('여기2');
+  // console.log(user);
+  return user ? { ...user, id: user._id.toString() } : user;
 }
