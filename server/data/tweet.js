@@ -11,13 +11,6 @@ export const getAll = async () => {
       console.log(data);
       return data;
     });
-
-  // return Promise.all(
-  //   tweets.map(async (tweet) => {
-  //     const { username, name, url } = await userRepository.findById(tweet.userId);
-  //     return { ...tweet, username, name, url };
-  //   })
-  // );
 };
 
 export const getAllByUsername = async (username) => {
@@ -26,27 +19,12 @@ export const getAllByUsername = async (username) => {
     .sort({ createdAt: -1 })
     .toArray()
     .then(mapTweets);
-
-  // return getAll().then((tweets) => tweets.filter((tweet) => tweet.username === username));
 };
 
 export const getById = async (id) => {
   return getTweets()
     .findOne({ _id: new ObjectId(id) })
     .then(mapOptionalTweet);
-
-  // const found = tweets.find((tweet) => tweet.id === id);
-
-  // const yo = await userRepository.getAllUsers();
-
-  // if (!found) {
-  //   return null;
-  // }
-
-  // const yo2 = await userRepository.findById(found.userId);
-
-  // const { username, name, url } = yo2;
-  // return { ...found, username, name, url };
 };
 
 export const create = async (text, username) => {
@@ -61,26 +39,10 @@ export const create = async (text, username) => {
     url,
   };
 
-  return (
-    getTweets()
-      .insertOne(tweet)
-      // 새롭게 만들어진 tweet을 리턴해줘야함
-      .then((data) => mapOptionalTweet({ ...tweet, _id: data.insertedId }))
-  );
+  return getTweets()
+    .insertOne(tweet)
 
-  // const user = await userRepository.findByUsername(username);
-
-  // console.log(user);
-
-  // const tweet = {
-  //   id: Date.now().toString(),
-  //   text,
-  //   createdAt: new Date().toString(),
-  //   userId: user.id,
-  // };
-
-  // tweets = [tweet, ...tweets];
-  // return getById(tweet.id);
+    .then((data) => mapOptionalTweet({ ...tweet, _id: data.insertedId }));
 };
 
 export const update = async (id, text) => {
@@ -88,25 +50,10 @@ export const update = async (id, text) => {
     .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { text } }, { returnDocument: 'after' })
     .then((result) => result.value)
     .then(mapOptionalTweet);
-
-  // const tweet = await getById(id);
-  // tweets = [
-  //   ...tweets.filter((v) => v.id !== id),
-  //   {
-  //     ...tweet,
-  //     text,
-  //   },
-  // ];
-
-  // return {
-  //   ...tweet,
-  //   text,
-  // };
 };
 
 export const remove = async (id) => {
   return getTweets().deleteOne({ _id: new ObjectId(id) });
-  // tweets = tweets.filter((t) => t.id != id);
 };
 
 function mapOptionalTweet(tweet) {
