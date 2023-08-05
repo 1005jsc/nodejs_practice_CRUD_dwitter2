@@ -18,17 +18,19 @@ export const isAuth = async (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (authHeader && authHeader.startsWith('Bearer ')) {
     // 5. 실제 로직 만들기
-    // 일단 받아오는 authHeader에 토큰을 까본다
+    // 일단 받은 header에 토큰이 있는지 까본다
+    // 까서 변수 token에 넣어둔다
     token = authHeader.split(' ')[1];
   }
 
   if (!token) {
-    // header에 토큰이 없다면 그러면 쿠키를 봐본다
+    // 만약 header에 토큰이 없다면 그러면 쿠키를 봐본다
+
     token = req.cookies['token'];
   }
 
   if (!token) {
-    // 쿠키에도 없다면 그러면 그때 AUTH_ERROR를 리턴한다
+    // 쿠키에도 없다면 token이 아예 없는 것이다. 이때 AUTH_ERROR를 리턴한다
     return res.status(401).json(AUTH_ERROR);
   }
 
