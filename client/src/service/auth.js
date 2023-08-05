@@ -1,7 +1,4 @@
 export default class AuthService {
-  // 4. 모든 service에서  tokenStorage관련된 것들 다 지우기
-  // token은 client의 메모리에 저장이 된다
-
   constructor(http) {
     this.http = http;
   }
@@ -17,8 +14,6 @@ export default class AuthService {
         url,
       }),
     });
-    //   this.tokenStorage.saveToken(data.token);
-    //   return data;
   }
 
   async login(username, password) {
@@ -26,20 +21,19 @@ export default class AuthService {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
-    // this.tokenStorage.saveToken(data.token);
-    // return data;
   }
 
   async me() {
-    // const token = this.tokenStorage.getToken();
     return this.http.fetch('/auth/me', {
       method: 'GET',
-      // headers: { Authorization: `Bearer ${token}` },
     });
   }
 
+  // 프론트에서는 '로그아웃'만 보내주면 된다
+
   async logout() {
-    // TODO(재신)
-    this.tokenStorage.clearToken();
+    return await this.http.fetch('/auth/logout', {
+      method: 'POST',
+    });
   }
 }
