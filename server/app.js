@@ -3,20 +3,29 @@ import 'express-async-errors';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import { Server } from 'socket.io';
 
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 import devRouter from './router/dev.js';
 import { config } from './config.js';
-import { Server } from 'socket.io';
 import { initSocket } from './connection/socket.js';
 import { sequelize } from './db/database.js';
 
 const app = express();
 
+const corsOption = {
+  origin: config.cors.allowedOrigin,
+  optionsSuccessStatus: 200,
+  // 여기 옵션 true라고 해야됨
+  credentials: true, //  allow the Access-Control-Allow-Credentials 이제 '어 request에 header가 있네? 그럼
+};
+
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOption));
 app.use(morgan('tiny'));
 
 app.use('/tweets', tweetsRouter);
@@ -33,8 +42,8 @@ app.use((error, req, res, next) => {
 });
 
 sequelize.sync().then((client) => {
-  // console.log(client);
-  const server = app.listen(config.host.port);
+  console.log(`Server is Started... ${new Date()}`);
+  const server = app.listen(config.port);
 
   initSocket(server);
 });
