@@ -13,12 +13,16 @@ import Login from '../pages/Login';
 
 const AuthContext = createContext({});
 
-const contextRef = createRef();
+const tokenRef = createRef();
 
 export function AuthProvider({ authService, authErrorEventBus, children }) {
   const [user, setUser] = useState(undefined);
 
-  useImperativeHandle(contextRef, () => (user ? user.token : undefined));
+  // 5.
+  // useInperativeHandle 은 forwardRef랑 똑같은 역할을 한다고 생각하면 된다
+  // ref는 컴포넌트들간의 이동이 안되니까 굳이 이동을 시키고 싶으면 이걸 쓰면 된다
+
+  useImperativeHandle(tokenRef, () => (user ? user.token : undefined));
 
   useEffect(() => {
     authErrorEventBus.listen((err) => {
@@ -33,9 +37,7 @@ export function AuthProvider({ authService, authErrorEventBus, children }) {
 
   const signUp = useCallback(
     async (username, password, name, email, url) =>
-      authService
-        .signup(username, password, name, email, url)
-        .then((user) => setUser(user)),
+      authService.signup(username, password, name, email, url).then((user) => setUser(user)),
     [authService]
   );
 
@@ -84,5 +86,5 @@ export class AuthErrorEventBus {
 }
 
 export default AuthContext;
-export const fetchToken = () => contextRef.current;
+export const fetchToken = () => tokenRef.current;
 export const useAuth = () => useContext(AuthContext);
